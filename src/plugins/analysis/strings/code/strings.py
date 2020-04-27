@@ -14,6 +14,7 @@ class AnalysisPlugin(AnalysisBasePlugin):
     DESCRIPTION = 'extracts strings and their offsets from the files consisting of printable characters'
     VERSION = '0.3.4'
 
+    # 针对二进制文件使用正则表达式进行匹配 搜索字符串 长度为
     STRING_REGEXES = [
         (b'[\x09-\x0d\x20-\x7e]{$len,}', 'utf-8'),
         (b'(?:[\x09-\x0d\x20-\x7e]\x00){$len,}', 'utf-16'),
