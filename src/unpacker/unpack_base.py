@@ -16,6 +16,7 @@ class UnpackBase:
     def get_extracted_files_dir(base_dir):
         return Path(base_dir, 'files')
 
+    # 调用fact_extractor 来识别提取固件文件
     def extract_files_from_file(self, file_path, tmp_dir):
         self._initialize_shared_folder(tmp_dir)
         shutil.copy2(file_path, str(Path(tmp_dir, 'input', Path(file_path).name)))
