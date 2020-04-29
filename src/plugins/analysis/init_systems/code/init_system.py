@@ -1,5 +1,5 @@
 import re
-
+import datetime
 from analysis.PluginBase import AnalysisBasePlugin
 from helperFunctions.dataConversion import make_unicode_string
 
@@ -120,6 +120,7 @@ class AnalysisPlugin(AnalysisBasePlugin):
         return result
 
     def process_object(self, file_object):
+        start=datetime.datetime.now()
         if self._is_text_file(file_object) and (file_object.file_name not in FILE_IGNORES):
             self.file_path = self._get_file_path(file_object)
             self.content = make_unicode_string(file_object.binary)
@@ -140,6 +141,8 @@ class AnalysisPlugin(AnalysisBasePlugin):
         else:
             file_object.processed_analysis[self.NAME] = dict()
             file_object.processed_analysis[self.NAME]['summary'] = list()
+        end=datetime.datetime.now()
+        print("init_system:",end-start)
         return file_object
 
     @staticmethod

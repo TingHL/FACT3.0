@@ -1,4 +1,5 @@
 import sys
+import datetime
 from pathlib import Path
 
 from analysis.YaraPluginBase import YaraBasePlugin
@@ -23,6 +24,7 @@ class AnalysisPlugin(YaraBasePlugin):
         super().__init__(plugin_administrator, config=config, recursive=recursive, plugin_path=__file__)
 
     def process_object(self, file_object):
+        start=datetime.datetime.now()
         file_object = super().process_object(file_object)
 
         yara_results = file_object.processed_analysis.pop(self.NAME)
@@ -37,6 +39,8 @@ class AnalysisPlugin(YaraBasePlugin):
         file_object.processed_analysis[self.NAME]['summary'] = [name for name, _ in binary_vulnerabilities + matched_vulnerabilities]
 
         self.add_tags(file_object, binary_vulnerabilities + matched_vulnerabilities)
+        end=datetime.datetime.now()
+        print("known_vulnerabilities:",end-start)
 
         return file_object
 
