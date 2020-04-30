@@ -60,7 +60,7 @@ class IORoutes(ComponentBase):
         response.headers['Content-Disposition'] = 'attachment; filename={}'.format(file_name)
         return response
 
-    # ---- upload
+    # ---- upload 上传函数
     @roles_accepted(*PRIVILEGES['submit_analysis'])
     def _app_upload(self):
         error = {}

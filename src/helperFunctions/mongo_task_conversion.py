@@ -38,7 +38,7 @@ def create_re_analyze_task(request, uid):
         task['release_date'] = '1970-01-01'
     return task
 
-
+# 根据上传页面填写的数据 获取元信息
 def _get_meta_from_request(request):
     meta = {
         'device_name': request.form['device_name'],
