@@ -42,3 +42,4 @@ start_faf_frontend
 update_statistic.cron
 wget-lo*
 src/install/get-pip.py
+.vscode/settings.json

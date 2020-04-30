@@ -2,8 +2,6 @@ import logging
 import os
 import re
 import sys
-import time
-import datetime
 from contextlib import suppress
 from tempfile import NamedTemporaryFile
 
@@ -22,8 +20,6 @@ class AnalysisPlugin(AnalysisBasePlugin):
     MIME_BLACKLIST = ['audio', 'filesystem', 'image', 'video']
     DESCRIPTION = 'search for UNIX and httpd password files, parse them and try to crack the passwords'
     VERSION = '0.4.1'
-    start= 0
-    end= 0
 
     wordlist_path = os.path.join(get_src_dir(), 'bin/passwords.txt')
 
@@ -43,8 +39,6 @@ class AnalysisPlugin(AnalysisBasePlugin):
         Analysis result must be a dict stored in file_object.processed_analysis[self.NAME]
         If you want to propagate results to parent objects store a list of strings 'summary' entry of your result dict
         '''
-        start_all=datetime.datetime.now()
-        start=time.clock()
         if self.NAME not in file_object.processed_analysis:
             file_object.processed_analysis[self.NAME] = {}
         file_object.processed_analysis[self.NAME]['summary'] = []
@@ -58,10 +52,6 @@ class AnalysisPlugin(AnalysisBasePlugin):
                 result = self._generate_analysis_entry(passwd_entries)
                 file_object.processed_analysis[self.NAME].update(result)
                 file_object.processed_analysis[self.NAME]['summary'] += list(result.keys())
-        end=time.clock()
-        end_all=datetime.datetime.now()
-        print("users_and_passwords cpu time:",end-start)
-        print("users_and_passwords process time:",end_all-start_all)
         return file_object
 
     def _generate_analysis_entry(self, passwd_entries):

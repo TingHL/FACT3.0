@@ -14,7 +14,6 @@ lifts to the following architectures:
 '''
 import json
 import logging
-import datetime
 from collections import defaultdict
 from subprocess import DEVNULL, PIPE, Popen
 
@@ -127,7 +126,6 @@ class AnalysisPlugin(AnalysisBasePlugin):
         This function handles only ELF executable. Otherwise it returns an empty dictionary.
         It calls the external BAP plugin cwe_checker.
         '''
-        start=datetime.datetime.now()
         if not self._is_supported_arch(file_object):
             logging.debug('{}\'s arch is not supported ({})'.format(
                 file_object.file_path,
@@ -135,6 +133,4 @@ class AnalysisPlugin(AnalysisBasePlugin):
             file_object.processed_analysis[self.NAME] = {'summary': []}
         else:
             file_object = self._do_full_analysis(file_object)
-        end=datetime.datetime.now()
-        print("cwe_checker:",end-start)
         return file_object
