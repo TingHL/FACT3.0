@@ -6,7 +6,7 @@ from contextlib import suppress
 
 class Firmware(FileObject):
     '''
-    This objects represents a firmware
+    This objects represents a firmware  固件文件继承FileObject
     '''
 
     def __init__(self, binary=None, file_name=None, file_path=None, scheduled_analysis=None):

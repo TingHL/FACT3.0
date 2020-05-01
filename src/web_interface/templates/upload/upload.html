@@ -32,6 +32,7 @@
                 <div class="form-group">
                     <label class="control-label col-xs-3" for="selectFile">File:</label>
                         <div class="col-xs-9 {% if 'file' in error.keys() %}has-error{% endif %}">
+                            <!-- name属性 file 上传文件 -->
                             <input id="selectFile" type="file" name=file required>
                             {% if "file" in error.keys() %}
                                 <span class="help-block">{{ error["file"] }}</span>
@@ -70,6 +71,7 @@
                 </script>
 
                 <div class="form-group">
+                    <!-- for 规定 label 绑定到哪个表单元素 -->
                     <label class="control-label col-xs-3" for="device_class_dropdown">Device Class:</label>
                         <div class="col-xs-9 {% if 'device_class' in error.keys() %}has-error{% endif %}">
                             <select class="form-control" id="device_class_dropdown" name='device_class_dropdown' size="4" required

@@ -6,12 +6,13 @@ from helperFunctions.dataConversion import get_value_of_first_key, make_bytes, m
 from helperFunctions.hash import get_sha256
 from helperFunctions.uid import create_uid
 
-
+# 文件模板 所有文件均要在这个类基础上完成
 class FileObject():  # pylint: disable=too-many-instance-attributes
     '''
     This is the base file objects. All files in FACT should be implemented as this object type.
     '''
 
+    # scheduled_analysis 选中运行插件
     def __init__(self, binary=None, file_name=None, file_path=None, scheduled_analysis=None):
         self.uid = None
         self.files_included = set()
@@ -41,6 +42,7 @@ class FileObject():  # pylint: disable=too-many-instance-attributes
             self.file_path = None
         self.virtual_file_path = {}
 
+    # file 有binary属性 同时根据binary可以创建文件的sha256,size,uid属性
     def set_binary(self, binary):
         self.binary = make_bytes(binary)
         self.sha256 = get_sha256(self.binary)

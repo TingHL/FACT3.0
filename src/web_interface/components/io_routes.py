@@ -65,9 +65,11 @@ class IORoutes(ComponentBase):
     def _app_upload(self):
         error = {}
         if request.method == 'POST':
+            # 创建分析任务
             analysis_task = create_analysis_task(request)
             error = check_for_errors(analysis_task)
             if not error:
+                # 分析任务转换为一个firmware对象
                 fw = convert_analysis_task_to_fw_obj(analysis_task)
                 with ConnectTo(InterComFrontEndBinding, self._config) as sc:
                     sc.add_analysis_task(fw)

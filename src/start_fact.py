@@ -43,6 +43,7 @@ def _evaluate_optional_args(args):
     return optional_args
 
 
+# 根据输入的命令行以及其中的参数运行 对应的脚本文件,返回一个文件描述符号为fd的打开的文件对象
 def _start_component(component, args):
     script_path = os.path.join(get_src_dir(), '../start_fact_{}'.format(component))
     if os.path.exists(script_path):
@@ -57,7 +58,7 @@ def _start_component(component, args):
         logging.debug('{} not installed'.format(component))
         return None
 
-
+# 关掉进程
 def _terminate_process(process: Popen):
     if process is not None:
         os.kill(process.pid, signal.SIGUSR1)
@@ -80,7 +81,9 @@ if __name__ == '__main__':
     process_list = []
     run = True
     args, config = program_setup(PROGRAM_NAME, PROGRAM_DESCRIPTION)
-
+    # print("start_all_installed_fact_componets:")
+    # print("args:",args)
+    # print("config:",config)
     db_process = _start_component('db', args)
     sleep(2)
     frontend_process = _start_component('frontend', args)

@@ -7,11 +7,17 @@ from tempfile import TemporaryDirectory
 from helperFunctions.uid import create_uid
 from objects.firmware import Firmware
 
+# 可选选项
 OPTIONAL_FIELDS = ['tags', 'device_part']
+# 必选选项
 DROPDOWN_FIELDS = ['device_class', 'vendor', 'device_name', 'device_part']
 
 
 def create_analysis_task(request):
+    # 任务 有一系列的属性 
+    # device_name, device_part, device_class,vendor,
+    # version,release_date,requested_analysis_systems,tags,
+    # file_name,binary,uid, release_date, 
     task = _get_meta_from_request(request)
     if request.files['file']:
         task['file_name'], task['binary'] = get_file_name_and_binary_from_request(request)
@@ -47,9 +53,14 @@ def _get_meta_from_request(request):
         'vendor': request.form['vendor'],
         'version': request.form['version'],
         'release_date': request.form['release_date'],
+        # 选中的功能
         'requested_analysis_systems': request.form.getlist('analysis_systems'),
         'tags': request.form['tags']
     }
+
+    # for i in meta['requested_analysis_systems']:
+    #     print('requested_analysis_systems:'+i)
+
     _get_meta_from_dropdowns(meta, request)
 
     if 'file_name' in request.form.keys():
@@ -91,8 +102,9 @@ def convert_analysis_task_to_fw_obj(analysis_task):
     return fw
 
 
-def get_uid_of_analysis_task(analysis_task):
+def get_uid_of_analysis_task(analysis_task):    
     if analysis_task['binary']:
+        # SHA256_SIZE创建文件的唯一uid
         uid = create_uid(analysis_task['binary'])
         return uid
     return None
@@ -103,8 +115,10 @@ def get_uploaded_file_binary(request_file):
         tmp_dir = TemporaryDirectory(prefix='fact_upload_')
         tmp_file_path = os.path.join(tmp_dir.name, 'upload.bin')
         try:
+            # 将上传文件保存在tmp_file_path
             request_file.save(tmp_file_path)
             with open(tmp_file_path, 'rb') as tmp_file:
+                # 读取上传文件到binary中,返回 (一次性读取到内存中)
                 binary = tmp_file.read()
             tmp_dir.cleanup()
             return binary

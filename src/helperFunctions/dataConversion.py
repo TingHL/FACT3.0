@@ -3,7 +3,7 @@ from datetime import datetime
 from pickle import dumps
 from typing import List, Set
 
-
+#转换成bytes 二进制类型
 def make_bytes(code):
     if isinstance(code, bytes):
         return code

@@ -28,15 +28,20 @@ from common_helper_files import create_dir_for_file
 from helperFunctions.config import get_config_dir
 from version import __VERSION__
 
-
+# 返回相关参数(config_file,debug,log_file,log_level,silent,testing等) 以及配置文件对象
 def program_setup(name, description, version=__VERSION__, command_line_options=None):
+    # command_line_options 是指当前输入的命令行
     command_line_options = sys.argv if not command_line_options else command_line_options
+    # 相关配置在args中
     args = _setup_argparser(name, description, command_line_options=command_line_options, version=version)
+    # print('program_setup.py:')
+    # print('args:',args)
+    # print('command_line',command_line_options)
     config = _load_config(args)
     _setup_logging(config, args)
     return args, config
 
-
+# 该函数运行以后 会配置config_file, debug, log_file,log_level, silent, testing等属性(没有设置则使用默认值),并返回.
 def _setup_argparser(name, description, command_line_options, version=__VERSION__):
     parser = argparse.ArgumentParser(description='{} - {}'.format(name, description))
     parser.add_argument('-V', '--version', action='version', version='{} {}'.format(name, version))
@@ -46,6 +51,10 @@ def _setup_argparser(name, description, command_line_options, version=__VERSION_
     parser.add_argument('-s', '--silent', action='store_true', default=False, help='don\'t log to command line')
     parser.add_argument('-C', '--config_file', help='set path to config File', default='{}/main.cfg'.format(get_config_dir()))
     parser.add_argument('-t', '--testing', default=False, action='store_true', help='shutdown system after one iteration')
+    # Convert argument strings to objects and assign them as attributes of the namespace. Return the populated namespace.
+    # 解析输入参数
+    # 例如运行./start_all_installed_components 输出结果为:
+    # Namespace(config_file='/home/hui/A/FACT_clone_3.0/src/config/main.cfg', debug=False, log_file=None, log_level=None, silent=False, testing=False)
     return parser.parse_args(command_line_options[1:])
 
 
@@ -73,7 +82,7 @@ def _setup_logging(config, args):
         console_log.setFormatter(log_format)
         logger.addHandler(console_log)
 
-
+# 读取配置文件,并返回配置文件对象
 def _load_config(args):
     config = configparser.ConfigParser()
     config.read(args.config_file)
@@ -86,4 +95,12 @@ def _load_config(args):
 
 def was_started_by_start_fact():
     parent = psutil.Process(os.getppid()).cmdline()[-1]
+    print('parent:',parent)
+    print('psutil.Process(os.getppid()).cmdline():',psutil.Process(os.getppid()).cmdline())
+    # ./start_all_installed_fact_components.py 
+    # 输出 psutil.Process(os.getppid()).cmdline() ['python3', './start_all_installed_fact_components'] 获取启动该脚本的父进程命令行 
+    # ./start_fact_db.py  或者 ./start_fact_frontend 或者 ./start_fact_backend 命令 
+    # 输出为:psutil.Process(os.getppid()).cmdline(): ['bash']
+
+    print('start_fact.py' in parent or './start_all_installed_fact_componets' in parent)
     return 'start_fact.py' in parent or 'start_all_installed_fact_components' in parent
