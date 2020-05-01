@@ -14,6 +14,7 @@ from storage.db_interface_common import MongoInterfaceCommon
 
 class BackEndDbInterface(MongoInterfaceCommon):
 
+    # 判断文件类型:file类型或者是firmware固件类型 
     def add_object(self, fo_fw):
         if isinstance(fo_fw, Firmware):
             self.add_firmware(fo_fw)
@@ -57,6 +58,7 @@ class BackEndDbInterface(MongoInterfaceCommon):
             old_pa[key] = new_object.processed_analysis[key]
         return self.sanitize_analysis(analysis_dict=old_pa, uid=new_object.get_uid())
 
+    
     def add_firmware(self, firmware):
         old_object = self.firmwares.find_one({'_id': firmware.get_uid()})
         if old_object:

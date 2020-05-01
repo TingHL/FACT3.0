@@ -17,6 +17,7 @@ class MongoInterfaceCommon(MongoInterface):
 
     def _setup_database_mapping(self):
         main_database = self.config['data_storage']['main_database']
+        # 选择名为fact_main的数据库,没有会被创建
         self.main = self.client[main_database]
         self.firmwares = self.main.firmwares
         self.file_objects = self.main.file_objects

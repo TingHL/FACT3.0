@@ -1,6 +1,6 @@
 import yaml
 
-
+# 读取解析mongodb.conf 文件
 def parse_yaml(file_path):
     with open(file_path, 'r') as fd:
         data = yaml.safe_load(fd)

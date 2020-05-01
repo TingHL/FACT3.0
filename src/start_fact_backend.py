@@ -45,11 +45,16 @@ if __name__ == '__main__':
     if was_started_by_start_fact():
         signal.signal(signal.SIGUSR1, shutdown)
         signal.signal(signal.SIGINT, lambda *_: None)
+        # os.getpid() 获取当前进程的id
+        # os.setpgid(pid, pgrp)
+        # 系统调用 setpgid() 把进程ID为 pid 的进程的进程组ID设置为参数 pgrp 对应的进程组
         os.setpgid(os.getpid(), os.getpid())  # reset pgid to self so that "complete_shutdown" doesn't run amok
     else:
         signal.signal(signal.SIGINT, shutdown)
     args, config = program_setup(PROGRAM_NAME, PROGRAM_DESCRIPTION)
+    # 分析服务
     analysis_service = AnalysisScheduler(config=config)
+    #
     tagging_service = TaggingDaemon(analysis_scheduler=analysis_service)
     unpacking_service = UnpackingScheduler(config=config, post_unpack=analysis_service.start_analysis_of_object, analysis_workload=analysis_service.get_scheduled_workload)
     compare_service = CompareScheduler(config=config)

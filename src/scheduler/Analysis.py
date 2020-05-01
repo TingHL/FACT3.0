@@ -18,6 +18,7 @@ from helperFunctions.tag import add_tags_to_object, check_tags
 from objects.file import FileObject
 from storage.db_interface_backend import BackEndDbInterface
 
+# file_type file_hashes是必须要运行的插件
 MANDATORY_PLUGINS = ['file_type', 'file_hashes']
 
 
@@ -33,7 +34,9 @@ class AnalysisScheduler:  # pylint: disable=too-many-instance-attributes
         self.stop_condition = Value('i', 0)
         self.process_queue = Queue()
         self.tag_queue = Queue()
+        # db_backend_service 创建与数据db之间的接口处理对象
         self.db_backend_service = db_interface if db_interface else BackEndDbInterface(config=config)
+        
         self.pre_analysis = pre_analysis if pre_analysis else self.db_backend_service.add_object
         self.post_analysis = post_analysis if post_analysis else self.db_backend_service.add_analysis
         self.start_scheduling_process()

@@ -95,12 +95,8 @@ def _load_config(args):
 
 def was_started_by_start_fact():
     parent = psutil.Process(os.getppid()).cmdline()[-1]
-    print('parent:',parent)
-    print('psutil.Process(os.getppid()).cmdline():',psutil.Process(os.getppid()).cmdline())
     # ./start_all_installed_fact_components.py 
     # 输出 psutil.Process(os.getppid()).cmdline() ['python3', './start_all_installed_fact_components'] 获取启动该脚本的父进程命令行 
     # ./start_fact_db.py  或者 ./start_fact_frontend 或者 ./start_fact_backend 命令 
     # 输出为:psutil.Process(os.getppid()).cmdline(): ['bash']
-
-    print('start_fact.py' in parent or './start_all_installed_fact_componets' in parent)
     return 'start_fact.py' in parent or 'start_all_installed_fact_components' in parent

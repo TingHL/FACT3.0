@@ -22,6 +22,8 @@ class MongoMgr:
         except (KeyError, TypeError):
             self.mongo_log_path = '/tmp/fact_mongo.log'
         self.config_path = os.path.join(get_config_dir(), 'mongod.conf')
+        # mongod.conf 文件中的 ['storage']]['dbPath']=/media/data/fact_wt_mongodb
+        # mongodb数据库存储位置位于/media/data/fact_wt_mongodb中
         self.mongo_db_file_path = get_mongo_path(self.config_path)
         logging.debug('Data Storage Path: {}'.format(self.mongo_db_file_path))
         create_dir_for_file(self.mongo_log_path)
@@ -48,6 +50,7 @@ class MongoMgr:
         else:
             logging.info('using external mongodb: {}:{}'.format(self.config['data_storage']['mongo_server'], self.config['data_storage']['mongo_port']))
 
+    # 检查配置文件,日志文件,存储路径,权限 均存在,则进行下一个步骤,否则杀死进程
     def check_file_and_directory_existence_and_permissions(self):
         if not os.path.isfile(self.config_path):
             complete_shutdown('Error: config file not found: {}'.format(self.config_path))
