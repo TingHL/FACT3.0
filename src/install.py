@@ -45,7 +45,7 @@ INSTALL_CANDIDATES = ['frontend', 'db', 'backend']
 BIONIC_CODE_NAMES = ['bionic', 'tara']
 XENIAL_CODE_NAMES = ['xenial', 'yakkety', 'sarah', 'serena', 'sonya', 'sylvia']
 
-
+# 设置相关参数
 def _setup_argparser():
     parser = argparse.ArgumentParser(description='{} - {}'.format(PROGRAM_NAME, PROGRAM_DESCRIPTION))
     parser.add_argument('-V', '--version', action='version', version='{} {}'.format(PROGRAM_NAME, PROGRAM_VERSION))
@@ -145,19 +145,25 @@ if __name__ == '__main__':
     args = _setup_argparser()
     _setup_logging(args, debug_flag=args.debug)
     welcome()
+    # distribution=bionic
     distribution = check_distribution()
     none_chosen = not (args.frontend or args.db or args.backend)
-
+    # __file__ 当前文件位置
+    # installation_directory = ~/A/FACT_clone_3.0/src/install
     installation_directory = str(Path(Path(__file__).parent, 'install').absolute())
 
     with OperateInDirectory(installation_directory):
+        # 安装三个部分都会用到的通用开源插件
         common(distribution)
 
         if args.frontend or none_chosen:
+            # 安装前端依赖以及程序
             frontend(not args.no_radare, args.nginx)
         if args.db or none_chosen:
+            #安装数据库
             db(distribution)
         if args.backend or none_chosen:
+            #安装后台程序
             backend()
 
     if args.statistic_cronjob:

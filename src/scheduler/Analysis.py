@@ -36,9 +36,11 @@ class AnalysisScheduler:  # pylint: disable=too-many-instance-attributes
         self.tag_queue = Queue()
         # db_backend_service 创建与数据db之间的接口处理对象
         self.db_backend_service = db_interface if db_interface else BackEndDbInterface(config=config)
-        
+        # 
         self.pre_analysis = pre_analysis if pre_analysis else self.db_backend_service.add_object
+        # 
         self.post_analysis = post_analysis if post_analysis else self.db_backend_service.add_analysis
+        # 
         self.start_scheduling_process()
         self.start_result_collector()
         logging.info('Analysis System online...')

@@ -11,7 +11,9 @@ from common_helper_process import execute_shell_command_get_return_code
 class InstallationError(Exception):
     pass
 
-
+# with OperatInDiretory(target_directory) 
+# __enter__ 会进入目标文件夹下 __exit__ 在完成目标后,会退出回到处理之前的文件夹状态下
+# remove=True 会删除目标文件夹,结束后
 class OperateInDirectory():
     def __init__(self, target_directory, remove=False):
         self._current_working_dir = None

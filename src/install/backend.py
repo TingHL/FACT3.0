@@ -41,7 +41,7 @@ def main():
     _edit_sudoers()
     _edit_environment()
 
-    # create directories
+    # create directories /media/data/fact_fw_data
     _create_firmware_directory()
 
     # compiling yara signatures

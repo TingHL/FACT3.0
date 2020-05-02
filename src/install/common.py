@@ -19,7 +19,7 @@ def install_pip(python_command):
         if return_code != 0:
             raise InstallationError('Error in pip installation for {}:\n{}'.format(python_command, output))
 
-
+# distribution=bionic
 def main(distribution):  # pylint: disable=too-many-statements
     apt_install_packages('apt-transport-https')
 
@@ -29,6 +29,9 @@ def main(distribution):  # pylint: disable=too-many-statements
     apt_autoremove_packages()
     apt_clean_system()
 
+    # execute_shell_command_get_return_code 返回的值为 output, return_code两个值
+    # output 从 stdout 和 stderr 读取数据，直到文件结束符 返回一个 (stdout_data, stderr_data) 元组
+    # return_code None —— 子进程尚未结束； ==0 子进程正常退出； > 0 子进程异常退出，returncode对应于出错码； <0 子进程被信号杀掉了
     _, is_repository = execute_shell_command_get_return_code('git status')
     if is_repository == 0:
         # update submodules
@@ -38,7 +41,7 @@ def main(distribution):  # pylint: disable=too-many-statements
     else:
         logging.warning('FACT is not set up using git. Note that *adding submodules* won\'t work!!')
 
-    # make bin dir
+    # make bin dir 在src目录下
     with suppress(FileExistsError):
         os.mkdir('../bin')
 

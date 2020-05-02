@@ -19,6 +19,7 @@ class MongoInterfaceCommon(MongoInterface):
         main_database = self.config['data_storage']['main_database']
         # 选择名为fact_main的数据库,没有会被创建
         self.main = self.client[main_database]
+        # 固件firmware 和文件file 会被单独存储在不同的collection中
         # 选择名为firms的collection 没有会被创建
         self.firmwares = self.main.firmwares
         # 选择名为file_objects 的collection 没有会被创建

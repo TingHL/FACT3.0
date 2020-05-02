@@ -9,6 +9,7 @@ from helperFunctions.install import apt_install_packages, InstallationError, apt
 
 
 def _get_db_directory():
+
     output, return_code = execute_shell_command_get_return_code('grep -oP "dbPath:[\s]*\K[^\s]+" ../config/mongod.conf')
     if return_code != 0:
         raise InstallationError('Unable to locate target for database directory')
@@ -35,8 +36,8 @@ def main(distribution):
     else:
         apt_install_packages('mongodb')
 
-    # creating DB directory
-    fact_db_directory = _get_db_directory()
+    # creating DB directory 创建 赋权/media/data/fact_wt_mongodb文件夹
+    fact_db_directory = _get_db_directory() 
     mkdir_output, _ = execute_shell_command_get_return_code('sudo mkdir -p --mode=0744 {}'.format(fact_db_directory))
     chown_output, chown_code = execute_shell_command_get_return_code('sudo chown {}:{} {}'.format(os.getuid(), os.getgid(), fact_db_directory))
     if chown_code != 0:
