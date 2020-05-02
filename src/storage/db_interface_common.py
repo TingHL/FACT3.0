@@ -19,8 +19,11 @@ class MongoInterfaceCommon(MongoInterface):
         main_database = self.config['data_storage']['main_database']
         # 选择名为fact_main的数据库,没有会被创建
         self.main = self.client[main_database]
+        # 选择名为firms的collection 没有会被创建
         self.firmwares = self.main.firmwares
+        # 选择名为file_objects 的collection 没有会被创建
         self.file_objects = self.main.file_objects
+        # 选择名为lock的collection 没有会被创建
         self.locks = self.main.locks
         # sanitize stuff
         self.report_threshold = int(self.config['data_storage']['report_threshold'])
