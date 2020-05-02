@@ -48,7 +48,7 @@ if __name__ == '__main__':
         signal.signal(signal.SIGINT, shutdown)
 
     args, config = program_setup(PROGRAM_NAME, PROGRAM_DESCRIPTION)
-    # 初始化mongodb类型的对象的属性,并运行
+    # 初始化mongodb类型的对象的属性,并运行mongo数据库
     mongo_server = MongoMgr(config=config)
     # 更新系统状态
     work_load_stat = WorkLoadStatistic(config=config, component='database')

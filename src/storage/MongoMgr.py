@@ -14,7 +14,7 @@ class MongoMgr:
     '''
     mongo server startup and shutdown
     '''
-
+    # 默认开启用户认证
     def __init__(self, config=None, auth=True):
         self.config = config
         try:
@@ -81,8 +81,11 @@ class MongoMgr:
             client = MongoClient('mongodb://{}:{}'.format(mongo_server, mongo_port, connect=False))
             client.admin.command(
                 "createUser",
+                # 用户名
                 self.config['data_storage']['db_admin_user'],
+                # 用户密码
                 pwd=self.config['data_storage']['db_admin_pw'],
+                # 用户的角色
                 roles=[
                     {'role': 'dbOwner', 'db': 'admin'},
                     {'role': 'readWriteAnyDatabase', 'db': 'admin'},

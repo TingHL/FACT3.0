@@ -34,9 +34,6 @@ def program_setup(name, description, version=__VERSION__, command_line_options=N
     command_line_options = sys.argv if not command_line_options else command_line_options
     # 相关配置在args中
     args = _setup_argparser(name, description, command_line_options=command_line_options, version=version)
-    # print('program_setup.py:')
-    # print('args:',args)
-    # print('command_line',command_line_options)
     config = _load_config(args)
     _setup_logging(config, args)
     return args, config

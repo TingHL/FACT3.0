@@ -81,9 +81,6 @@ if __name__ == '__main__':
     process_list = []
     run = True
     args, config = program_setup(PROGRAM_NAME, PROGRAM_DESCRIPTION)
-    # print("start_all_installed_fact_componets:")
-    # print("args:",args)
-    # print("config:",config)
     db_process = _start_component('db', args)
     sleep(2)
     frontend_process = _start_component('frontend', args)
