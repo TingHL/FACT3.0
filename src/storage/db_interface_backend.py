@@ -15,6 +15,8 @@ from storage.db_interface_common import MongoInterfaceCommon
 class BackEndDbInterface(MongoInterfaceCommon):
 
     # 判断文件类型:file类型或者是firmware固件类型 
+    # firmware类型 fact_main数据库的firmware collection中添加
+    # file_object类型 fact_main数据库中file_objects中添加
     def add_object(self, fo_fw):
         if isinstance(fo_fw, Firmware):
             self.add_firmware(fo_fw)
@@ -58,7 +60,7 @@ class BackEndDbInterface(MongoInterfaceCommon):
             old_pa[key] = new_object.processed_analysis[key]
         return self.sanitize_analysis(analysis_dict=old_pa, uid=new_object.get_uid())
 
-    
+    # 向fact_main数据库中firmware collection添加(更新)firmware 对象
     def add_firmware(self, firmware):
         old_object = self.firmwares.find_one({'_id': firmware.get_uid()})
         if old_object:
@@ -77,7 +79,8 @@ class BackEndDbInterface(MongoInterfaceCommon):
             except Exception as e:
                 logging.error('Could not add firmware: {} - {}'.format(sys.exc_info()[0].__name__, e))
                 return None
-
+    
+    # firmware在mongodb中的存储格式
     def build_firmware_dict(self, firmware):
         analysis = self.sanitize_analysis(analysis_dict=firmware.processed_analysis, uid=firmware.get_uid())
         entry = {
@@ -104,6 +107,7 @@ class BackEndDbInterface(MongoInterfaceCommon):
             entry['comments'] = firmware.comments
         return entry
 
+    # 向file_objects collection中添加file_object
     def add_file_object(self, file_object):
         old_object = self.file_objects.find_one({'_id': file_object.get_uid()})
         if old_object:
@@ -122,7 +126,8 @@ class BackEndDbInterface(MongoInterfaceCommon):
             except Exception as e:
                 logging.error('Could not update firmware: {} - {}'.format(sys.exc_info()[0].__name__, e))
                 return None
-
+    
+    # file_object 在mongodb中的格式
     def build_file_object_dict(self, file_object):
         analysis = self.sanitize_analysis(analysis_dict=file_object.processed_analysis, uid=file_object.get_uid())
         entry = {
@@ -173,6 +178,7 @@ class BackEndDbInterface(MongoInterfaceCommon):
         else:
             logging.warning('Propagating tag only allowed for firmware. Given: {}')
 
+    
     def add_analysis(self, file_object: FileObject):
         if isinstance(file_object, (Firmware, FileObject)):
             processed_analysis = self.sanitize_analysis(file_object.processed_analysis, file_object.get_uid())

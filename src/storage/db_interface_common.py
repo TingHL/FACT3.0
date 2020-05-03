@@ -28,7 +28,10 @@ class MongoInterfaceCommon(MongoInterface):
         self.locks = self.main.locks
         # sanitize stuff
         self.report_threshold = int(self.config['data_storage']['report_threshold'])
+        # sanitize_db=faf_sanitize
         sanitize_db = self.config['data_storage'].get('sanitize_database', 'faf_sanitize')
+        # faf_sanitize数据库,该数据库下有fs.chunks,fs.files 两个collection
+        # girdFS 用于存储和恢复超过16MB的文件 两个集合来存储一个文件fs.files, fs.chunks
         self.sanitize_storage = self.client[sanitize_db]
         self.sanitize_fs = gridfs.GridFS(self.sanitize_storage)
 
